@@ -16,6 +16,19 @@ Home tuition enquiry website. Features:
 
 Routes: `/` (home + form), `/thank-you`, `/admin`
 
+## Notes
+
+### GitHub Integration
+The Replit GitHub integration was dismissed by the user. To push to GitHub in the future, either:
+1. Connect via the Replit Git panel (branch icon in left sidebar), or
+2. Provide a GitHub Personal Access Token (classic) with `repo` scope — store it as a secret `GITHUB_TOKEN` and use `git push https://<token>@github.com/<user>/<repo>.git`
+
+### Email Notifications (Resend)
+- Admin notification sent to: at4340985@gmail.com
+- Uses Resend API (`RESEND_API_KEY` secret)
+- Emails sent on every successful enquiry submission
+- From: onboarding@resend.dev (Resend sandbox domain — upgrade to a verified domain for production)
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces
