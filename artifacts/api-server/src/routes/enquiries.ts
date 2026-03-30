@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { db, enquiriesTable, insertEnquirySchema } from "@workspace/db";
 import { desc } from "drizzle-orm";
+import { sendEnquiryEmails } from "../lib/email";
 
 const router: IRouter = Router();
 
@@ -29,6 +30,21 @@ router.post("/enquiries", async (req, res) => {
       .insert(enquiriesTable)
       .values(parsed.data)
       .returning();
+
+    // Send emails in background — don't block the response
+    sendEnquiryEmails({
+      name: enquiry.name,
+      phone: enquiry.phone,
+      email: enquiry.email,
+      boardClass: enquiry.boardClass,
+      subject: enquiry.subject,
+      location: enquiry.location,
+      message: enquiry.message,
+      createdAt: enquiry.createdAt,
+    }).catch((err) => {
+      req.log.error({ err }, "Email sending failed");
+    });
+
     res.status(201).json(enquiry);
   } catch (err) {
     req.log.error({ err }, "Failed to create enquiry");
