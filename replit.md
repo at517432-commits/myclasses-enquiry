@@ -4,6 +4,18 @@
 
 pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
 
+## Applications
+
+### MyClasses (`artifacts/myclasses`)
+Home tuition enquiry website. Features:
+- Hero section with logo, heading, and subtext
+- Enquiry form for free demo class bookings (stores to PostgreSQL)
+- Thank-you confirmation page after form submission
+- Admin page at `/admin` showing all submitted enquiries in a table
+- Warm orange & cream color theme, responsive design
+
+Routes: `/` (home + form), `/thank-you`, `/admin`
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces

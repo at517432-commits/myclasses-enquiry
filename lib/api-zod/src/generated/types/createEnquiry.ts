@@ -5,21 +5,6 @@
  * MyClasses API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
-
-export interface Enquiry {
-  id: number;
-  name: string;
-  phone: string;
-  email: string;
-  boardClass: string;
-  subject: string;
-  location: string;
-  message?: string | null;
-  createdAt: string;
-}
 
 export interface CreateEnquiry {
   /** @minLength 1 */
@@ -34,8 +19,4 @@ export interface CreateEnquiry {
   /** @minLength 1 */
   location: string;
   message?: string | null;
-}
-
-export interface ErrorResponse {
-  error: string;
 }

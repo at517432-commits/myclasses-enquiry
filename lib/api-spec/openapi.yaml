@@ -1,15 +1,16 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: MyClasses API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: enquiries
+    description: Enquiry management
 paths:
   /healthz:
     get:
@@ -24,6 +25,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /enquiries:
+    get:
+      operationId: getEnquiries
+      tags: [enquiries]
+      summary: Get all enquiries
+      description: Returns all submitted enquiries (admin view)
+      responses:
+        "200":
+          description: List of enquiries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Enquiry"
+    post:
+      operationId: createEnquiry
+      tags: [enquiries]
+      summary: Submit a new enquiry
+      description: Submit a free demo class enquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEnquiry"
+      responses:
+        "201":
+          description: Enquiry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enquiry"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +73,73 @@ components:
           type: string
       required:
         - status
-
+    Enquiry:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        boardClass:
+          type: string
+        subject:
+          type: string
+        location:
+          type: string
+        message:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - phone
+        - email
+        - boardClass
+        - subject
+        - location
+        - createdAt
+    CreateEnquiry:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        phone:
+          type: string
+          pattern: "^[0-9]{10}$"
+        email:
+          type: string
+          format: email
+        boardClass:
+          type: string
+          minLength: 1
+        subject:
+          type: string
+          minLength: 1
+        location:
+          type: string
+          minLength: 1
+        message:
+          type: string
+          nullable: true
+      required:
+        - name
+        - phone
+        - email
+        - boardClass
+        - subject
+        - location
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

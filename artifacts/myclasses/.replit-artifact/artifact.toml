@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "MyClasses"
+version = "1.0.0"
+id = "artifacts/myclasses"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18205
+
+[services.development]
+run = "pnpm --filter @workspace/myclasses run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/myclasses", "run", "build" ]
+publicDir = "artifacts/myclasses/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18205"
+BASE_PATH = "/"
