@@ -1,14 +1,22 @@
 {
-  "name": "workspace",
-  "version": "0.0.0",
+  "name": "myclasses-enquiry",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
+    "preinstall": "sh -c 'if [ \"$RENDER\" != \"true\" ]; then rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac; fi'",
+    "postinstall": "if [ \"$RENDER\" = \"true\" ]; then npm install -g pnpm@10 && pnpm install --ignore-scripts && BASE_PATH=/ PORT=3000 pnpm --filter @workspace/myclasses run build; fi",
+    "start": "node server.js",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
   "private": true,
+  "dependencies": {
+    "cors": "^2",
+    "express": "^5",
+    "pg": "^8",
+    "resend": "^4"
+  },
   "devDependencies": {
     "typescript": "~5.9.2",
     "prettier": "^3.8.1"
